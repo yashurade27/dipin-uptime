@@ -1,11 +1,21 @@
 import express from "express";
 import { authMiddleware } from "./middleware";
 import { prismaClient } from "db/client";
-import { memo } from "react";
+import cors from "cors";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
+
 
 app.post("/api/v1/website", authMiddleware, async (req, res) => {
   const userId = req.userId!;
@@ -47,7 +57,11 @@ app.get("/api/v1/websites", authMiddleware, async (req, res) => {
   const websites = await prismaClient.websites.findMany({
     where: {
       userId,
+      disabled: false,
     },
+    include: {
+      ticks: true
+    }
   });
   res.json({
     websites,
@@ -71,8 +85,8 @@ app.delete("/api/v1/website/", authMiddleware, async (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(8080, () => {
+  console.log("Server is running on port 8080");
 });
 
 export default app;
