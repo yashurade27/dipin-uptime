@@ -65,8 +65,8 @@ const mockWebsites: Website[] = [
   },
 ];
 
-const API_BACKEND_URL = process.env.NEXT_PUBLIC_API_BACKEND_URL || "http://localhost:3001";
-const USE_MOCK_DATA = process.env.NODE_ENV === "development"; // Toggle this for real API
+const API_BACKEND_URL = process.env.NEXT_PUBLIC_API_BACKEND_URL || "http://localhost:8080";
+const USE_MOCK_DATA = false; // Disable mock data to use real API
 
 interface UseWebsitesReturn {
   websites: Website[];
@@ -93,16 +93,44 @@ export function useWebsites(): UseWebsitesReturn {
     }
 
     try {
+      console.log('Fetching websites from:', API_BACKEND_URL);
       const token = await getToken();
+      console.log('Token received:', token ? 'Yes' : 'No');
+      
+      if (!token) {
+        console.log('No token available, user might not be authenticated');
+        setError("Please sign in to view your monitors");
+        setIsLoading(false);
+        return;
+      }
+
       const response = await axios.get(`${API_BACKEND_URL}/api/v1/websites`, {
         headers: { Authorization: `Bearer ${token}` },
+        timeout: 10000, // 10 second timeout
       });
       
+      console.log('API Response:', response.data);
       setWebsites(response.data.websites || response.data || []);
       setError(null);
     } catch (err: any) {
-      setError(err?.response?.data?.message || err?.message || "Failed to load websites");
-      console.error("Error fetching websites:", err);
+      console.error("Full error object:", err);
+      console.error("Error response:", err?.response);
+      console.error("Error message:", err?.message);
+      console.error("Error code:", err?.code);
+      
+      let errorMessage = "Failed to load websites";
+      
+      if (err?.code === 'ECONNREFUSED' || err?.message?.includes('Network Error')) {
+        errorMessage = "Cannot connect to server. Please make sure the API server is running on port 8080.";
+      } else if (err?.response?.status === 401) {
+        errorMessage = "Authentication failed. Please sign in again.";
+      } else if (err?.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err?.message) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

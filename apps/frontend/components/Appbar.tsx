@@ -11,48 +11,28 @@ import { ModeToggle } from './ModeToggle'
 
 export function Appbar() {
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+        <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container flex h-14 items-center justify-between px-4 max-w-5xl mx-auto">
                 {/* Logo Section */}
                 <div className="flex items-center space-x-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                        <span className="text-sm font-bold">D</span>
+                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-foreground text-background">
+                        <span className="text-xs font-bold">U</span>
                     </div>
-                    <span className="text-xl font-bold text-foreground">
-                        DPin Uptime
+                    <span className="text-lg font-semibold text-foreground">
+                        Uptime
                     </span>
                 </div>
 
                 {/* Navigation & Auth Section */}
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
                     <SignedIn>
-                        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-                            <a 
-                                href="/dashboard" 
-                                className="text-foreground/60 transition-colors hover:text-foreground"
-                            >
-                                Dashboard
-                            </a>
-                            <a 
-                                href="/monitors" 
-                                className="text-foreground/60 transition-colors hover:text-foreground"
-                            >
-                                Monitors
-                            </a>
-                            <a 
-                                href="/status" 
-                                className="text-foreground/60 transition-colors hover:text-foreground"
-                            >
-                                Status
-                            </a>
-                        </nav>
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center space-x-2">
                             <ModeToggle />
                             <UserButton 
                                 afterSignOutUrl='/' 
                                 appearance={{
                                     elements: {
-                                        avatarBox: "h-8 w-8"
+                                        avatarBox: "h-7 w-7"
                                     }
                                 }}
                             />
@@ -60,15 +40,15 @@ export function Appbar() {
                     </SignedIn>
                     
                     <SignedOut>
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center space-x-2">
                             <ModeToggle />
                             <SignInButton>
-                                <Button variant="ghost" size="sm">
+                                <Button variant="ghost" size="sm" className="h-8 px-3 text-xs">
                                     Sign In
                                 </Button>
                             </SignInButton>
                             <SignUpButton>
-                                <Button size="sm">
+                                <Button size="sm" className="h-8 px-3 text-xs">
                                     Sign Up
                                 </Button>
                             </SignUpButton>

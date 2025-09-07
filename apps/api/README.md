@@ -1,15 +1,1 @@
-# api
-
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.19. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+# Uptime Monitor API\n\nA backend API for the uptime monitoring application with Clerk authentication and PostgreSQL database.\n\n## Features\n\n- ✅ Clerk Authentication integration\n- ✅ PostgreSQL database with Prisma ORM\n- ✅ Website monitoring endpoints\n- ✅ Automatic seeded data for new users\n- ✅ CORS support for frontend integration\n- ✅ Error handling and validation\n\n## Setup\n\n### 1. Install Dependencies\n\n```bash\nbun install\n```\n\n### 2. Environment Variables\n\nCreate a `.env` file in the `apps/api` directory:\n\n```env\n# Clerk Authentication\nCLERK_SECRET_KEY=sk_test_...\n\n# Database\nDATABASE_URL=postgresql://username:password@localhost:5432/uptime_db\n\n# Frontend URL for CORS\nFRONTEND_URL=http://localhost:3000\n\n# Server Port\nPORT=8080\n```\n\n### 3. Database Setup\n\n```bash\n# Navigate to the db package\ncd ../../packages/db\n\n# Run Prisma migrations\nnpx prisma migrate dev\n\n# Generate Prisma client\nnpx prisma generate\n```\n\n### 4. Start the Server\n\n```bash\n# From the api directory\nbun run index.ts\n```\n\n## API Endpoints\n\n### Authentication\n\nAll endpoints require a valid Clerk JWT token in the Authorization header:\n\n```\nAuthorization: Bearer <clerk_jwt_token>\n```\n\n### Endpoints\n\n#### GET `/api/v1/websites`\n\nGet all websites for the authenticated user. Automatically creates seeded data for new users.\n\n#### POST `/api/v1/website`\n\nAdd a new website to monitor.\n\n#### GET `/api/v1/website/status?websiteId=<id>`\n\nGet detailed status for a specific website.\n\n#### DELETE `/api/v1/website/:id`\n\nDisable/remove a website from monitoring.\n\n#### GET `/health`\n\nHealth check endpoint.\n\n## Seeded Data\n\nNew users automatically get the following websites added for demonstration:\n\n- Google (https://google.com)\n- GitHub (https://github.com)\n- Vercel (https://vercel.com)\n\nEach seeded website includes sample tick data to demonstrate the monitoring functionality.

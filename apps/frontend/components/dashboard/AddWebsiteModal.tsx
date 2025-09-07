@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Globe, AlertCircle, Plus } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -69,16 +69,18 @@ export function AddWebsiteModal({ open, onOpenChange, onAddWebsite }: AddWebsite
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <form onSubmit={handleSubmit}>
-          <DialogHeader>
-            <DialogTitle>Add Monitor</DialogTitle>
-            <DialogDescription>
-              Monitor a website or API endpoint.
+          <DialogHeader className="space-y-2">
+            <DialogTitle className="text-lg">Add Monitor</DialogTitle>
+            <DialogDescription className="text-sm">
+              Enter a website or API endpoint to monitor
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
-            <div>
-              <Label htmlFor="url">URL</Label>
+            <div className="space-y-2">
+              <Label htmlFor="url" className="text-sm font-medium">
+                URL
+              </Label>
               <Input
                 id="url"
                 type="url"
@@ -86,33 +88,35 @@ export function AddWebsiteModal({ open, onOpenChange, onAddWebsite }: AddWebsite
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 disabled={isSubmitting}
-                className="mt-1"
+                className="h-9"
+                autoFocus
               />
             </div>
 
             {error && (
-              <Alert variant="destructive">
+              <Alert variant="destructive" className="py-2">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription className="text-xs">{error}</AlertDescription>
               </Alert>
             )}
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="gap-2">
             <Button
               type="button"
               variant="outline"
               onClick={handleClose}
               disabled={isSubmitting}
+              size="sm"
             >
               Cancel
             </Button>
             <Button 
               type="submit" 
               disabled={isSubmitting}
-              className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 rounded-md"
+              size="sm"
             >
-              {isSubmitting ? "Adding..." : "Add"}
+              {isSubmitting ? "Adding..." : "Add Monitor"}
             </Button>
           </DialogFooter>
         </form>

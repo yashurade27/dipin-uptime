@@ -39,11 +39,11 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black">
+      <div className="min-h-screen bg-background">
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+          <div className="text-center space-y-3">
+            <div className="w-6 h-6 border-2 border-border border-t-foreground rounded-full animate-spin mx-auto"></div>
+            <p className="text-sm text-muted-foreground">Loading monitors...</p>
           </div>
         </div>
       </div>
@@ -51,61 +51,65 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
-      <div className="container mx-auto px-6 py-8 max-w-6xl">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-bold text-black dark:text-white">
-              Status Dashboard
-            </h1>
-          </div>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-xl font-semibold text-foreground">
+            Monitors
+          </h1>
           <Button 
             onClick={() => setIsAddModalOpen(true)}
-            className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 rounded-md"
+            size="sm"
+            className="h-8 px-3 text-xs"
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Monitor
+            <Plus className="w-3 h-3 mr-1" />
+            Add
           </Button>
         </div>
 
         {/* Stats */}
         {websites.length > 0 && (
-          <div className="grid grid-cols-3 gap-4 mb-8">
-            <div className="border border-gray-200 dark:border-gray-800 rounded-md p-4">
-              <p className="text-xs text-gray-600 dark:text-gray-400">Total</p>
-              <p className="text-xl font-bold text-black dark:text-white">{totalSites}</p>
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="bg-card border border-border rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">Total</p>
+              <p className="text-lg font-medium text-foreground">{totalSites}</p>
             </div>
-            <div className="border border-gray-200 dark:border-gray-800 rounded-md p-4">
-              <p className="text-xs text-gray-600 dark:text-gray-400">Online</p>
-              <p className="text-xl font-bold text-black dark:text-white">{onlineSites}</p>
+            <div className="bg-card border border-border rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">Online</p>
+              <p className="text-lg font-medium text-green-600">{onlineSites}</p>
             </div>
-            <div className="border border-gray-200 dark:border-gray-800 rounded-md p-4">
-              <p className="text-xs text-gray-600 dark:text-gray-400">Uptime</p>
-              <p className="text-xl font-bold text-black dark:text-white">{avgUptime.toFixed(1)}%</p>
+            <div className="bg-card border border-border rounded-lg p-3">
+              <p className="text-xs text-muted-foreground">Uptime</p>
+              <p className="text-lg font-medium text-foreground">{avgUptime.toFixed(1)}%</p>
             </div>
           </div>
         )}
 
         {/* Monitors */}
         {websites.length === 0 ? (
-          <div className="border border-gray-200 dark:border-gray-800 rounded-md p-8 text-center">
-            <h3 className="text-lg font-medium text-black dark:text-white mb-2">
-              No monitors yet
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Add your first website to start monitoring
-            </p>
-            <Button 
-              onClick={() => setIsAddModalOpen(true)}
-              className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 rounded-md"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Website
-            </Button>
+          <div className="bg-card border border-border rounded-lg p-8 text-center">
+            <div className="max-w-sm mx-auto">
+              <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto mb-3">
+                <Plus className="w-5 h-5 text-muted-foreground" />
+              </div>
+              <h3 className="text-sm font-medium text-foreground mb-1">
+                No monitors
+              </h3>
+              <p className="text-xs text-muted-foreground mb-4">
+                Start monitoring your websites and APIs
+              </p>
+              <Button 
+                onClick={() => setIsAddModalOpen(true)}
+                size="sm"
+                className="h-8 px-3 text-xs"
+              >
+                Add Monitor
+              </Button>
+            </div>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-2">
             {websites.map((website) => (
               <WebsiteMonitor key={website.id} website={website} />
             ))}

@@ -23,53 +23,58 @@ export function WebsiteMonitor({ website }: WebsiteMonitorProps) {
   const latestTick = recentTicks[0];
 
   return (
-    <div className="border border-gray-200 dark:border-gray-800 rounded-md">
+    <div className="bg-card border border-border rounded-lg overflow-hidden">
       <Accordion type="single" collapsible>
         <AccordionItem value={website.id} className="border-none">
-          <div className="p-4">
-            <AccordionTrigger className="flex items-center justify-between w-full hover:no-underline p-0">
-              <div className="flex items-center gap-3 flex-1">
-                <StatusIndicator isUp={isUp} />
-                <div className="flex-1">
+          <div className="p-3">
+            <AccordionTrigger className="flex items-center justify-between w-full hover:no-underline p-0 [&[data-state=open]>div>div:last-child]:opacity-0">
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <StatusIndicator isUp={isUp} size="sm" />
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-medium text-black dark:text-white">
+                    <h3 className="font-medium text-foreground text-sm truncate">
                       {website.name || new URL(website.url).hostname}
                     </h3>
                     <span className={cn(
-                      "text-xs px-2 py-0.5 border rounded-sm",
-                      isUp ? "text-green-600 border-green-600" : "text-red-600 border-red-600"
+                      "text-xs px-1.5 py-0.5 rounded-md font-medium flex-shrink-0",
+                      isUp 
+                        ? "text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-950" 
+                        : "text-red-700 bg-red-50 dark:text-red-400 dark:bg-red-950"
                     )}>
                       {isUp ? "UP" : "DOWN"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
-                    <span>{stats.uptime.toFixed(1)}%</span>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span>{stats.uptime.toFixed(1)}% uptime</span>
                     {latestTick && <span>{latestTick.latency}ms</span>}
                   </div>
+                </div>
+                <div className="flex-shrink-0">
+                  <UptimeBars ticks={recentTicks} maxBars={20} compact />
                 </div>
               </div>
             </AccordionTrigger>
           </div>
 
           <AccordionContent>
-            <div className="px-4 pb-4 border-t border-gray-200 dark:border-gray-800">
-              <div className="pt-4">
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-black dark:text-white mb-2">Last 30 minutes</h4>
-                  <UptimeBars ticks={recentTicks} />
+            <div className="px-3 pb-3 border-t border-border">
+              <div className="pt-3 space-y-3">
+                <div>
+                  <h4 className="text-xs font-medium text-foreground mb-2">Last 30 minutes</h4>
+                  <UptimeBars ticks={recentTicks} maxBars={60} />
                 </div>
-                <div className="grid grid-cols-3 gap-4 text-xs">
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Uptime: </span>
-                    <span className="text-black dark:text-white font-medium">{stats.uptime.toFixed(1)}%</span>
+                <div className="grid grid-cols-3 gap-3 text-xs">
+                  <div className="space-y-1">
+                    <span className="text-muted-foreground block">Uptime</span>
+                    <span className="text-foreground font-medium">{stats.uptime.toFixed(1)}%</span>
                   </div>
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Avg: </span>
-                    <span className="text-black dark:text-white font-medium">{stats.averageLatency}ms</span>
+                  <div className="space-y-1">
+                    <span className="text-muted-foreground block">Avg Response</span>
+                    <span className="text-foreground font-medium">{stats.averageLatency}ms</span>
                   </div>
-                  <div>
-                    <span className="text-gray-600 dark:text-gray-400">Checks: </span>
-                    <span className="text-black dark:text-white font-medium">{stats.successfulTicks}/{stats.totalTicks}</span>
+                  <div className="space-y-1">
+                    <span className="text-muted-foreground block">Checks</span>
+                    <span className="text-foreground font-medium">{stats.successfulTicks}/{stats.totalTicks}</span>
                   </div>
                 </div>
               </div>
